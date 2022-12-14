@@ -15,6 +15,7 @@ def main():
     f = open(k,"r",encoding='utf-8')
     data = f.readlines()
     list = calculate(data,timeList)
+    print(list)
     f.close()
     # print(timeList)
     # print(len(timeList))
@@ -58,20 +59,13 @@ def count():
 def calculate(data,timeList):
     length = len(data)
     ran = range(length)
-    indexTimeList = 0
-    
-    indexHour = 0
-    indexMin = 0
-    indexSec = 0
+    index = 0
     nextHour = 360
     nextMin = 6
-    nextSec = 1
     stringRowCount = 0
-    
-    c = 0
     rx = 0
     n = 0
-    
+    count = 0
  
     for i in ran:
         #最初の文字が数字でない場合Continue
@@ -81,56 +75,61 @@ def calculate(data,timeList):
         if i == length - 2:
             break
         
+        if index == len(timeList):
+            break
+        
         pickedData = data[i].split(",")[:2]
         pickedTime = pickedData[0].split(":")
         
-        
-        
-        if int(timeList[indexHour][0]) <= int(pickedTime[0]) < int(timeList[indexHour+nextHour][0]):
-            if int(timeList[indexMin][2]) <= int(pickedTime[1]) < int(timeList[indexMin+nextMin][2]):
-                if int(timeList[indexSec][4]) <= int(pickedTime[2]) <= int(timeList[indexSec][4]) + 9:
+        if int(timeList[index][0]) <= int(pickedTime[0]) < int(timeList[index+nextHour][0]):
+            if int(timeList[index][2]) <= int(pickedTime[1]) < int(timeList[index+nextMin][2]):
+                if int(timeList[index][4]) <= int(pickedTime[2]) <= int(timeList[index][4]) + 9:
                     rx += int(pickedData[1])
                     n += 1
                 else:
-                    if n != 0:
-                        timeList[indexTimeList][6] = str(rx/n)
+                    if n == 0:
+                        timeList[index][6] = timeList[index - 1][6]
+                        print("".join(timeList[index]))
+                        count += 1
+                    else:
+                        timeList[index][6] = str(rx/n)
+                        print("".join(timeList[index]))
+                        count += 1
                     rx = 0
                     n = 0
-                    indexTimeList += 1
-                    indexSec += nextSec    
+                    index += 1
+                    rx += int(pickedData[1])
+                    n += 1
             else:
-                if n != 0:
-                    timeList[indexTimeList][6] = str(rx/n)
+                if n == 0:
+                    timeList[index][6] = timeList[index - 1][6]
+                    print("".join(timeList[index]))
+                    count += 1
+                else:
+                    timeList[index][6] = str(rx/n)
+                    print("".join(timeList[index]))
+                    count += 1
                 rx = 0
                 n = 0
-                indexTimeList += 1
-                indexSec += nextSec
-                indexMin += nextMin
+                index += 1
+                rx += int(pickedData[1])
+                n += 1
         else:
-            if n != 0:
-                timeList[indexTimeList][6] = str(rx/n)
+            if n == 0:
+                timeList[index][6] = timeList[index - 1][6]
+                print("".join(timeList[index]))
+                count += 1
+            else:
+                timeList[index][6] = str(rx/n)
+                print("".join(timeList[index]))
+                count += 1
             rx = 0
             n = 0
-            indexTimeList += 1
-            indexSec += nextSec
-            indexMin += nextMin
-            indexHour += nextHour
+            index += 1
+            rx += int(pickedData[1])
+            n += 1
             
-            
-        # print("timeList[indexHour][0] = "+timeList[indexHour][0]+"\n"+"indexHour = "+str(indexHour))
-        # print("timeList[indexHour+nextHour][0] = "+timeList[indexHour+nextHour][0]+"\n"+"indexHour+nextHour = "+str(indexHour+nextHour))
-        # print("timeList[indexMin][2] = "+timeList[indexMin][2]+"\n"+"indexMin = "+str(indexMin))
-        # print("timeList[indexMin+nextMin][2] = "+timeList[indexMin+nextMin][2]+"\n"+"indexMin+nextMin = "+str(indexMin+nextMin))
-        # print("timeList[indexSec][4] = "+timeList[indexSec][4]+"\n"+"indexSec = "+str(indexSec))
-        # print("timeList[indexSec+nextSec][4] = "+timeList[indexSec+nextSec][4]+"\n"+"indexSec+nextSec = "+str(indexSec+nextSec))
-        # print("")
-       
-            
-
-            
-    for i in range(20): 
-        print(timeList[i])
-        pass
+    return count #最終的にはcountではなくlistを返したい
         
         
         
