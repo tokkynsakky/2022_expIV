@@ -89,7 +89,12 @@ def calculate(data,timeList):
             # print("")
             if int(timeList[index][2]) <= int(pickedTime[1]) < int(timeList[index+nextMin][2]):
                 if int(timeList[index][4]) <= int(pickedTime[2]) <= int(timeList[index][4]) + 9:
-                    rx += int(float(pickedData[1]))
+                    #==============================
+                    #rx += の際にもしも、正の値をプラスしようとした時に負にする条件式を追加する。
+                    if int(float(pickedData[1])) > 0:
+                        rx -= int(float(pickedData[1]))
+                    else:    
+                        rx += int(float(pickedData[1]))
                     n += 1
                 else:
                     if n == 0:
@@ -105,7 +110,10 @@ def calculate(data,timeList):
                     rx = 0
                     n = 0
                     index += 1
-                    rx += int(float(pickedData[1]))
+                    if int(float(pickedData[1])) > 0:
+                        rx -= int(float(pickedData[1]))
+                    else:    
+                        rx += int(float(pickedData[1]))
                     n += 1
             else:
                 if n == 0:
@@ -119,7 +127,10 @@ def calculate(data,timeList):
                 rx = 0
                 n = 0
                 index += 1
-                rx += int(float(pickedData[1]))
+                if int(float(pickedData[1])) > 0:
+                    rx -= int(float(pickedData[1]))
+                else:    
+                    rx += int(float(pickedData[1]))
                 n += 1
         else:
             if n == 0:
@@ -133,10 +144,17 @@ def calculate(data,timeList):
             rx = 0
             n = 0
             index += 1
-            rx += int(float(pickedData[1]))
+            if int(float(pickedData[1])) > 0:
+                rx -= int(float(pickedData[1]))
+            else:    
+                rx += int(float(pickedData[1]))
             n += 1
             
     return calculatedList 
+
+# RxData/200910/20091012/192.168.100.11_csv.log
+
+# ./RxData/200912/20091225/192.168.100.9_csv.log 
         
         
         
