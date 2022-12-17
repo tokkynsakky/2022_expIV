@@ -11,10 +11,13 @@ def main():
     for i in glob.glob("./RxData/*"):
         for j in glob.glob(i+"/*"):
             for k in glob.glob(j+"/*"):
+                print(k+" is Now")
+                
+                if "_Calculated_" in k:
+                    continue
                 
                 with open(k, 'rb') as f:
                     b = f.read()
-                    print(k)
                     
                 if not(chardet.detect(b)['encoding'] == "ascii"):
                     continue
@@ -22,9 +25,14 @@ def main():
                 f = open(k,"r",encoding='utf-8')
                 data = f.readlines()
                 list = calculate(data,timeList)
-                print(len(list))
                 f.close()
-                f = open(k,"w")
+                
+                if ".9_csv.log" in k:
+                    list = convert(list)
+                
+                file = k.replace("_","_Calculated_")
+                
+                f = open(file,"w")
                 input(list,f)
                 f.close()
     
@@ -51,7 +59,7 @@ def makeTimeList():
     return timeList
 
 
-    
+#10秒おきに変換する関数 
 def calculate(data,timeList):
     calculatedList = []
     length = len(data)
@@ -138,28 +146,28 @@ def calculate(data,timeList):
             
     return calculatedList 
 
-# RxData/200910/20091012/192.168.100.11_csv.log
 
+# エラーが発生して途中に文字コードの異なるファイルが紛れたファイル名
+# RxData/200910/20091012/192.168.100.11_csv.log
+# 23751 <= 該当箇所 <= 27815
+
+# 値が一部符号が反転しているファイル -> 教授に尋ねたところ、正常らしいのでそのままで良い
 # ./RxData/200912/20091225/192.168.100.9_csv.log 
         
+
+def convert(list):
+    for i in range(len(list)):
+        data = int(float(list[i][1]))
+        if data < 0:
+            data = data + 256
+        list[i][1] = str(data/2 - 121)
         
-        
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    return list
     
     
-        
     
+     
+# listの中身を取り出して与えられたファイルに書き込む関数 
 def input(list,f):
     length = len(list)
     for i in range(length):
