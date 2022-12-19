@@ -41,8 +41,9 @@ def accumulation(file):
         
         y = i[0]
         x = i[1]
-        i[0] = x/tmp #+ befor
+        i[0] = (x/tmp) * 100 # + befor
         i[1] = y
+        #befor = i[0]
         # befor = x/tmp
         
         
@@ -70,3 +71,9 @@ def writeData(list):
 
 if __name__ == "__main__":
     main()
+    
+    
+    
+# gnuplot> set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 pi - 1 ps 1.5
+# gnuplot> set pointintervalbox 3
+# gnuplot> plot 'accumulation.txt' with linespoints ls 1
