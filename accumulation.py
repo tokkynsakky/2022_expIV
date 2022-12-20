@@ -5,9 +5,6 @@ def main():
     list = accumulation(file)
     writeData(list)
     
-        
-            
-
 def accumulation(file):
     f = open(file,'r')
     data = f.readlines()
@@ -17,46 +14,20 @@ def accumulation(file):
     list = []
     for i in data:
         pickedData = i.split(" ")
-        # memory = int(pickedData[0])
         tmp += int(pickedData[1])
-        
-        
-        # 追加
-        # if int(pickedData[1]) == 0:
-        #     continue
-        
-        
         list.append([int(pickedData[0]),int(pickedData[1])])
-        # list.append([memory,tmp])
     f.close()
     
-    for i in list:
-        # roundNum = 8
-        # y = i[0]
-        # x = i[1]
-        # i[0] = round((x/tmp),roundNum)
-        # i[1] = y
-        
-        
-        
-        y = i[0]
-        x = i[1]
-        i[0] = (x/tmp) * 100 # + befor
-        i[1] = y
-        #befor = i[0]
-        # befor = x/tmp
-        
-        
-        # roundNum = 8
-        # y = i[0]
-        # x = i[1]
-        # i[0] = round((x/tmp),roundNum) + round(befor,roundNum)
-        # i[1] = y
-        # befor = i[0]
-        
-        # roundNum = 8
-        # i[1] = round((i[1]/tmp),roundNum) + round(befor,roundNum)
-        # befor = i[1]
+    num = len(list)
+    for i in range(len(list)):
+        num -= 1
+        if num < 0:
+            break
+        y = list[num][0]
+        x = list[num][1]
+        list[num][0] = ((x+befor)/tmp) * 100
+        list[num][1] = y
+        befor += x
     return list
         
 
@@ -72,8 +43,7 @@ def writeData(list):
 if __name__ == "__main__":
     main()
     
-    
-    
+# gnuplot> set logscale x
 # gnuplot> set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 pi - 1 ps 1.5
 # gnuplot> set pointintervalbox 3
 # gnuplot> plot 'accumulation.txt' with linespoints ls 1
