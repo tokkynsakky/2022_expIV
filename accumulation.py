@@ -9,7 +9,6 @@ def accumulation(file):
     f = open(file,'r')
     data = f.readlines()
     tmp = 0
-    count = 0
     befor = 0
     list = []
     for i in data:
