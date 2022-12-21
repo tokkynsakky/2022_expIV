@@ -2,12 +2,12 @@
 
 import glob
 import chardet
+import subprocess
 
 # $ perl -i -pe 's/\R/\n/g' sample.txt             
     
 def main():
     timeList = makeTimeList()
-    
     for i in glob.glob("./RxData/*"):
         for j in glob.glob(i+"/*"):
             for k in glob.glob(j+"/*"):
@@ -20,7 +20,10 @@ def main():
                     b = f.read()
                     
                 if not(chardet.detect(b)['encoding'] == "ascii"):
-                    continue
+                    print("move!!")
+                    subprocess.call(["sed", "-i", "-e", "23751,27815d", "RxData/200910/20091012/192.168.100.11_csv.log"])
+                    
+                    # continue
                 
                 f = open(k,"r",encoding='utf-8')
                 data = f.readlines()
