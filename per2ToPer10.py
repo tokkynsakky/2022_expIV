@@ -71,11 +71,17 @@ def calculate(data,timeList):
     rx = 0
     n = 0
     count = 0
+    flag = ""
  
     for i in ran:
         #最初の文字が数字でない場合Continue
+        if flag == "need sed":
+            # コマンドを実行したい
+            pass
+            
         if not data[i][0].isdigit():
             stringRowCount += 1
+            flag = "need sed"
             continue
         if i == length - stringRowCount:
             break
@@ -91,10 +97,6 @@ def calculate(data,timeList):
             continue
         
         if int(timeList[index][0]) <= int(pickedTime[0]) < int(timeList[index+nextHour][0]):
-            # print("timeList[index][0] = "+str(timeList[index][0])+" index = "+str(index))
-            # print("int(pickedTime[0]) = "+str(int(pickedTime[0])))
-            # print("int(timeList[index+nextHour][0]) = "+str(int(timeList[index+nextHour][0]))+" index+nextHour = "+str(index+nextHour))
-            # print("")
             if int(timeList[index][2]) <= int(pickedTime[1]) < int(timeList[index+nextMin][2]):
                 if int(timeList[index][4]) <= int(pickedTime[2]) <= int(timeList[index][4]) + 9:
                     rx += int(float(pickedData[1]))
@@ -106,8 +108,6 @@ def calculate(data,timeList):
                         count += 1
                     else:
                         timeList[index][6] = str(rx/n)
-                        # print("".join(timeList[index]))
-                        # print((timeList[index][6]))
                         calculatedList.append(["".join(timeList[index][:5]),"".join(timeList[index][6])])
                         count += 1
                     rx = 0
@@ -146,15 +146,14 @@ def calculate(data,timeList):
             
     return calculatedList 
 
+# sed -i -e '23751,27815d' RxData/200910/20091012/192.168.100.11_csv.log
+# sed -i -e '23751,27815d' spare\ data/RxData\ copy/200910/20091012/192.168.100.11_csv.log
 
 # エラーが発生して途中に文字コードの異なるファイルが紛れたファイル名
 # RxData/200910/20091012/192.168.100.11_csv.log
 # 23751 <= 該当箇所 <= 27815
 
-# 値が一部符号が反転しているファイル -> 教授に尋ねたところ、正常らしいのでそのままで良い
-# ./RxData/200912/20091225/192.168.100.9_csv.log 
-        
-
+# 18GHzのデータを物理量に対応させるための関数
 def convert(list):
     for i in range(len(list)):
         data = int(float(list[i][1]))
@@ -163,10 +162,7 @@ def convert(list):
         list[i][1] = str(data/2 - 121)
         
     return list
-    
-    
-    
-     
+
 # listの中身を取り出して与えられたファイルに書き込む関数 
 def input(list,f):
     length = len(list)
