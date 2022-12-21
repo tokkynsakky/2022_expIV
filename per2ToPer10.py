@@ -20,10 +20,7 @@ def main():
                     b = f.read()
                     
                 if not(chardet.detect(b)['encoding'] == "ascii"):
-                    print("move!!")
                     subprocess.call(["sed", "-i", "-e", "23751,27815d", "RxData/200910/20091012/192.168.100.11_csv.log"])
-                    
-                    # continue
                 
                 f = open(k,"r",encoding='utf-8')
                 data = f.readlines()
@@ -78,13 +75,8 @@ def calculate(data,timeList):
  
     for i in ran:
         #最初の文字が数字でない場合Continue
-        if flag == "need sed":
-            # コマンドを実行したい
-            pass
-            
         if not data[i][0].isdigit():
             stringRowCount += 1
-            flag = "need sed"
             continue
         if i == length - stringRowCount:
             break
@@ -148,9 +140,6 @@ def calculate(data,timeList):
             n += 1
             
     return calculatedList 
-
-# sed -i -e '23751,27815d' RxData/200910/20091012/192.168.100.11_csv.log
-# sed -i -e '23751,27815d' spare\ data/RxData\ copy/200910/20091012/192.168.100.11_csv.log
 
 # エラーが発生して途中に文字コードの異なるファイルが紛れたファイル名
 # RxData/200910/20091012/192.168.100.11_csv.log
